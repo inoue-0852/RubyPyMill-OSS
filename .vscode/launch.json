@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug ruby_pymill CLI",
+      "type": "rdbg",
+      "request": "launch",
+      "script": "bin/ruby_pymill",
+      "args": [
+        "examples/notebooks/sample.ipynb",
+        "--output",
+        "examples/outputs/out.ipynb",
+        "--params",
+        "examples/params/demo.json",
+        "--dry-run"
+      ]
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}"
+    }
+  ]
+}

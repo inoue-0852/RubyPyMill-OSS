@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# lib/ を読み込みパスに追加
+$LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
+
+require "thor"
+require "ruby_pymill"
+require "shellwords"
+
+class RubyPyMillCLI < Thor
+  # Thor の予約語 run を避ける。ユーザーが `run` と打っても :exec に転送
+  map "run" => :exec
+
+  desc "exec INPUT_IPYNB", "Run papermill with Ruby wrapper"
+  method_option :output,   type: :string, aliases: "-o", required: true, desc: "Output notebook path"
+  method_option :kernel,   type: :string, default: "python3",            desc: "Jupyter kernel name"
+  method_option :params,   type: :string,                                 desc: "Path to params.json or JSON string"
+  method_option :cwd,      type: :string,                                 desc: "Working directory"
+  method_option :dry_run,  type: :boolean, default: false,                desc: "Print command only"
+  # ★ 追加: タグ実行
+  method_option :cell_tag,  type: :string,                                desc: "Execute only cells with this tag (Papermill --cell_tag)"
+  method_option :cell_tags, type: :array,                                 desc:  "Execute only cells with these tags (space/comma-separated)"
+  
+  def exec(input_ipynb)
+  #  runner = RubyPyMill::Runner.new(kernel: options[:kernel], cwd: options[:cwd])
+    # --cell-tag / --cell-tags を正規化（nil/空/カンマを吸収）
+    tags = []
+    tags << options[:cell_tag] if options[:cell_tag]
+    tags.concat(options[:cell_tags]) if options[:cell_tags]
+    cell_tags = tags.compact.flat_map { |t| t.to_s.split(",") }.map(&:strip).reject(&:empty?)
+
+    runner = RubyPyMill::Runner.new(
+      kernel: options[:kernel],
+      cwd:    options[:cwd],
+      cell_tags: cell_tags
+    )
+    ok = runner.run(
+      input_ipynb:  input_ipynb,
+      output_ipynb: options[:output],
+      params_json:  options[:params],
+      dry_run:      options[:dry_run]
+    )
+    exit(ok ? 0 : 1)
+  end
+
+  desc "version", "Show RubyPyMill version"
+  def version
+    puts RubyPyMill::VERSION
+  end
+
+end
+
+RubyPyMillCLI.start(ARGV)

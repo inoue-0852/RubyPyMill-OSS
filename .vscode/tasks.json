@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "bundle:install",
+      "type": "shell",
+      "command": "bundle install",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "ruby:lint",
+      "type": "shell",
+      "command": "bundle exec rubocop",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "ruby:test",
+      "type": "shell",
+      "command": "bundle exec rspec",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "python:venv setup",
+      "type": "shell",
+      "command": "python -m venv .vrnv && .\\.vrnv\\Scripts\\activate && pip install -r py/requirements.txt",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "papermill:dryrun",
+      "type": "shell",
+      "command": "bundle exec ruby -I lib bin\\ruby_pymill exec examples\\notebooks\\sample.ipynb --output examples\\outputs\\out.ipynb --params examples\\params\\demo.json --dry-run",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "papermill:run",
+      "type": "shell",
+      "command": "bundle exec ruby -I lib bin\\ruby_pymill exec examples\\notebooks\\sample.ipynb --output examples\\outputs\\out.ipynb --params examples\\params\\demo.json",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

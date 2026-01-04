@@ -1,0 +1,42 @@
+# ==============================
+# RubyPyMill .gitignore
+# ==============================
+
+# Python venv / cache
+.venv/
+__pycache__/
+.pycache/
+
+# Ruby / Bundler
+/vendor/
+.bundle/
+Gemfile.lock
+
+# RubyGem build artifacts
+/pkg/
+/coverage/
+/.yardoc/
+
+# Temporary / logs
+/tmp/
+*.log
+
+# Editor / system files
+*.swp
+.DS_Store
+
+# Documents / binary files
+*.pdf
+*.pptx
+*.docx
+*.xlsx
+
+# --------------------------------
+# Notebook outputs
+# --------------------------------
+# Allow example outputs for demo,
+# but exclude temporary / generated files
+!examples/outputs/
+!examples/outputs/**
+examples/outputs/tmp*/
+examples/outputs/*.tmp

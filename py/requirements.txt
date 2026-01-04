@@ -1,0 +1,3 @@
+papermill
+jupyter
+ipykernel

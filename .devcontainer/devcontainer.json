@@ -1,0 +1,22 @@
+{
+  "name": "RubyPyMill",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "bundle install && python3 -m venv .venv && . .venv/bin/activate && pip install -r py/requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "misogi.ruby-rubocop",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "editorconfig.editorconfig",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "ms-vscode.makefile-tools",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

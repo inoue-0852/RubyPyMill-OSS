@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "Shopify.ruby-lsp",
+    "misogi.ruby-rubocop",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "editorconfig.editorconfig",
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "ms-vscode.makefile-tools",
+    "ms-azuretools.vscode-docker"
+  ]
+}

@@ -1,0 +1,6 @@
+bundle exec ruby -I lib bin\ruby_pymill exec examples\notebooks\sample.ipynb `
+>>   --output examples\outputs\out_ruby.ipynb `
+>>   --kernel rpymill `
+>>   --cell-tag run_only `
+>>   --params ".\examples\params\demo.json"
+>>

@@ -1,0 +1,52 @@
+#!/usr/bin/env pwsh
+# PowerShell Core (pwsh) 推奨。Windows は拡張子 .ps1 でもOK
+# 使い方:
+#   pwsh examples/commands/run_notebook.pwsh                 # 既定(タグ実行)
+#   pwsh examples/commands/run_notebook.pwsh -Full           # 全セル実行
+#   pwsh examples/commands/run_notebook.pwsh -Params .\examples\params\demo.json
+#   pwsh examples/commands/run_notebook.pwsh -Notebook .\examples\notebooks\sample.ipynb -Out .\examples\outputs\out_ruby.ipynb
+
+param(
+  [string]$Notebook = ".\examples\notebooks\sample.ipynb",
+  [string]$Out      = ".\examples\outputs\out_ruby.ipynb",
+  [string]$Kernel   = "rpymill",
+  [string]$Params   = ".\examples\params\demo.json",
+  [switch]$Full,                 # 付けると全セル実行（--cell-tag なし）
+  [string]$Tag = "run_only"      # タグ実行時のタグ名
+)
+
+# パスの存在チェック
+if (!(Test-Path $Notebook)) { Write-Error "Notebook not found: $Notebook"; exit 2 }
+$OutDir = Split-Path -Parent $Out
+if (!(Test-Path $OutDir)) { New-Item -ItemType Directory -Force -Path $OutDir | Out-Null }
+if (!(Test-Path $Params)) { Write-Warning "Params not found: $Params (続行は可能ですが変数が未定義になる恐れがあります)" }
+
+# コマンド組み立て
+$cmd = @(
+  "bundle", "exec", "ruby", "-I", "lib", "bin\ruby_pymill", "exec", $Notebook,
+  "--output", $Out,
+  "--kernel", $Kernel
+)
+
+if (-not $Full) {
+  $cmd += @("--cell-tag", $Tag)
+}
+
+if (Test-Path $Params) {
+  $cmd += @("--params", $Params)
+}
+
+Write-Host ">>> Running RubyPyMill"
+Write-Host ">>> " + ($cmd -join " ")
+
+# 実行
+& $cmd
+$exitCode = $LASTEXITCODE
+
+if ($exitCode -ne 0) {
+  Write-Error "RubyPyMill failed with exit code $exitCode"
+  exit $exitCode
+}
+
+Write-Host "✅ Done: $Out"
+exit 0

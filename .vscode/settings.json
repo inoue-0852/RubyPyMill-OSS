@@ -1,0 +1,22 @@
+{
+  "editor.formatOnSave": true,
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp"
+  },
+  "rubyLsp.formatter": "rubyfmt",
+  "rubyLsp.rubocop.enabled": true,
+  "ruby.rubocop.executePath": "bundle",
+  "ruby.rubocop.useBundler": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.vrnv/Scripts/python.exe",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.venv": true,
+    "**/.vrnv": false
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "ruby.lsp.diagnostics": false
+}

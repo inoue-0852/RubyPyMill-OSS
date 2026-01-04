@@ -1,0 +1,15 @@
+# Python venv / cache
+.venv/
+.vrnv/
+__pycache__/
+*.pyc
+
+# Ruby bundle (ローカルベンダ)
+vendor/
+
+# Jupyter output / artifacts
+examples/outputs/
+.ipynb_checkpoints/
+
+# VS Code ローカル
+.vscode/*.log
