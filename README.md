@@ -66,7 +66,13 @@ bundle install
 ### Python
 ```bash
 python -m venv .venv
+
+# macOS / Linux
 source .venv/bin/activate
+
+# Windows (PowerShell)
+.\.venv\Scripts\activate
+
 pip install -r py/requirements.txt
 python -m ipykernel install --user --name rpymill
 ```
@@ -116,8 +122,18 @@ parameters,setup,graph_output
 ```
 
 ### JSON パラメータ指定例
+### JSON parameter example (preview only)
+
+This example loads parameters from JSON and executes only the graph preview
+(`graph_view`) without generating output files.
+
 ```bash
-bundle exec ruby bin/ruby_pymill exec examples/notebooks/lang_radar.ipynb   --params examples/params/lang_radar.json   --kernel rpymill   --cell_tags "parameters,setup,graph_view"
+bundle exec ruby bin/ruby_pymill exec examples/notebooks/lang_radar.ipynb \
+  --output examples/outputs/lang_radar_out.ipynb \
+  --params examples/params/lang_radar.json \
+  --kernel rpymill \
+  --cell_tags "parameters,setup,graph_view"
+
 ```
 
 ---
