@@ -1,0 +1,11 @@
+language,dimension,score
+Ruby,DSL/Orchestration,5
+Ruby,Data Wrangling,4
+Ruby,Notebook Workflow,2
+Ruby,Visualization,3
+Ruby,Packaging/Deployment,5
+Python,DSL/Orchestration,3
+Python,Data Wrangling,5
+Python,Notebook Workflow,5
+Python,Visualization,5
+Python,Packaging/Deployment,4

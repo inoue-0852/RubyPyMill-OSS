@@ -1,3 +1,8 @@
 papermill
 jupyter
 ipykernel
+
+# example notebook dependencies
+pandas
+numpy
+matplotlib

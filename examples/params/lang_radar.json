@@ -1,0 +1,5 @@
+{
+    "csv_path": "examples/data/lang_skills.csv",
+    "output_png": "examples/outputs/lang_radar.png",
+    "title": "Ruby vs Python: Strength Profile (1–5) from json"
+}
