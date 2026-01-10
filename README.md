@@ -26,6 +26,13 @@ RubyPyMill enables reproducible notebook execution from the Ruby ecosystem.
 “Ruby aims to connect people with people, and tools with tools.”  
 — Yukihiro “Matz” Matsumoto
 
+## Installation
+RubyPyMill is distributed as a RubyGem:
+
+```bash
+gem install ruby_pymill
+```
+
 ## Project Structure
 | Directory | Description |
 |----------|-------------|

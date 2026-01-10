@@ -58,6 +58,12 @@ Jupyter Notebook（PoC 実行環境）
 | spec/ | RSpec テスト |
 
 ---
+## Installation
+RubyPyMill は RubyGems として配布されています。
+
+```bash
+gem install ruby_pymill
+```
 
 ## セットアップ
 
