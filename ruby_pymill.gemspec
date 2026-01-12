@@ -8,9 +8,14 @@ Gem::Specification.new do |spec|
   spec.email         = ["hiroshi.inoue@gmail.com"]
   spec.summary       = "Run Jupyter Notebooks from Ruby using Papermill"
   spec.description   = "Ruby orchestrator to filter/execute tagged Jupyter cells via Papermill."
-  spec.homepage      = "https://github.com/inoue-0852/RubyPyMill"
+  spec.homepage      = "https://github.com/inoue-0852/RubyPyMill-OSS"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 3.0"
+  spec.metadata = {
+    "changelog_uri" => "https://github.com/inoue-0852/RubyPyMill-OSS/blob/main/CHANGELOG.md",
+    "source_code_uri" => "https://github.com/inoue-0852/RubyPyMill-OSS"
+}
+
 
   # 重要: vendor配下などは含めない
   spec.files = Dir.chdir(__dir__) do

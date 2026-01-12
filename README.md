@@ -43,6 +43,8 @@ RubyPyMill is distributed as a RubyGem:
 ```bash
 gem install ruby_pymill
 ```
+> Note: RubyPyMill executes Jupyter notebooks via Papermill, so a Python environment is required.
+
 
 ## Setup
 
@@ -108,6 +110,11 @@ or future web APIs.
 
 The CLI is considered the stable interface.
 The Ruby API is experimental and may change.
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/inoue-0852/RubyPyMill-OSS/blob/main/CHANGELOG.md) for release history.
+
 
 ## License
 MIT License  

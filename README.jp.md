@@ -65,6 +65,8 @@ RubyPyMill は RubyGems として配布されています。
 gem install ruby_pymill
 ```
 
+> 注：RubyPyMill は Papermill を介して Jupyter notebook を実行するため、Python 環境が必要です。
+
 ## セットアップ
 
 ### Ruby
@@ -171,6 +173,11 @@ Ruby コードから直接 Notebook 実行を呼び出すことも可能です�
 
 ただし、API は将来変更される可能性があるため、  
 現時点では **実験的な位置づけ**としています。
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/inoue-0852/RubyPyMill-OSS/blob/main/CHANGELOG.md) for release history.
+
 
 ---
 
