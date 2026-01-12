@@ -77,6 +77,19 @@ bundle exec ruby bin/ruby_pymill exec <input.ipynb> \
   [--dry-run]
 ```
 
+### Windows (PowerShell)
+
+PowerShell does not support `\` for line continuation.
+Use backticks (`) or run the command in a single line.
+
+```powershell
+bundle exec ruby bin/ruby_pymill exec examples/notebooks/lang_radar.ipynb `
+  --output examples/outputs/lang_radar_out.ipynb `
+  --params examples/params/lang_radar.json `
+  --kernel rpymill `
+  --cell_tags "parameters,setup,graph_view,graph_output"
+```
+
 ## Processing Overview
 1. Load the notebook as JSON.
 2. Filter cells by specified tags (the `parameters` cell is always preserved).

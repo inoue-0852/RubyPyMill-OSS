@@ -146,6 +146,9 @@ bundle exec ruby bin/ruby_pymill exec examples/notebooks/lang_radar.ipynb \
   --cell_tags "parameters,setup,graph_view"
 
 ```
+> ※ Windows（PowerShell）では、コマンドの改行に `\` は使えません。  
+> README.md の PowerShell 例も参照してください。
+
 
 ---
 
