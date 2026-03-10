@@ -53,6 +53,7 @@ module RubyPyMill
       cwd: nil
     )
       # notebook: は input: の旧名称（後方互換）
+      # Add `notebook:` as a backward-compatible alias for `input:` in API.run
       resolved_input = input || notebook
       raise ArgumentError, "input: (or notebook:) is required" if resolved_input.nil?
 
