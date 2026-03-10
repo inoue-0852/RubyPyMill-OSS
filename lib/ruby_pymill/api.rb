@@ -1,59 +1,77 @@
 # lib/ruby_pymill/api.rb
-require "open3"
+require "fileutils"
 
 module RubyPyMill
+  class Error < StandardError; end
+  class ExecutionError < Error; end
+
+  Result = Struct.new(
+    :success,
+    :output,
+    :filtered_input,
+    :command,
+    :stdout,
+    :stderr,
+    keyword_init: true
+  ) do
+    def success?
+      success
+    end
+  end
+
   module API
-    # Ruby から notebook を実行する公式API
+    # Ruby から notebook を実行する公開API（experimental）
     #
     # 例:
-    #   RubyPyMill::API.run(
-    #     notebook: "demo/notebooks/xxx.ipynb",
-    #     output:   "demo/outputs/out.ipynb",
-    #     kernel:   "rpymill",
-    #     cell_tags:"setup,preprocess,report",
-    #     params:   "demo/params/kodama.json",
-    #     log:      "demo/logs/run_xxx.log"
+    #   result = RubyPyMill::API.run(
+    #     input:     "examples/notebooks/lang_radar.ipynb",
+    #     output:    "examples/outputs/lang_radar_out.ipynb",
+    #     kernel:    "rpymill",
+    #     cell_tags: "parameters,setup,graph_output",
+    #     params:    "examples/params/lang_radar.json",
+    #     log:       "examples/logs/lang_radar.log"
     #   )
     #
+    #   puts result.output
+    #
     def self.run(
-      notebook:,
+      input:,
       output:,
       kernel: "rpymill",
       cell_tags: nil,
       params: nil,
-      log: nil
+      log: nil,
+      dry_run: false,
+      logger: $stdout,
+      cwd: nil
     )
-      cmd = [
-        "ruby_pymill", "exec",
-        notebook,
-        "--output", output,
-        "--kernel", kernel,
-      ]
-      cmd += ["--cell-tag", cell_tags] if cell_tags && !cell_tags.empty?
-      cmd += ["--params", params]      if params && !params.empty?
+      runner = Runner.new(
+        kernel: kernel,
+        cwd: cwd,
+        logger: logger,
+        cell_tags: cell_tags
+      )
 
-      stdout_all = +""
-      status = nil
-
-      Open3.popen2e(*cmd) do |_stdin, stdout_err, wait_thr|
-        stdout_err.each do |line|
-          print line          # コンソールにも流す
-          stdout_all << line  # ログにも残す
-        end
-        status = wait_thr.value
-      end
+      result = runner.run(
+        input_ipynb: input,
+        output_ipynb: output,
+        params_json: params,
+        kernel: kernel,
+        dry_run: dry_run,
+        cell_tags: cell_tags
+      )
 
       if log
         log_dir = File.dirname(log)
-        Dir.mkdir(log_dir) unless Dir.exist?(log_dir)
-        File.write(log, stdout_all)
+        FileUtils.mkdir_p(log_dir)
+        File.write(log, [result.stdout, result.stderr].reject(&:empty?).join)
       end
 
-      unless status&.success?
-        raise "ruby_pymill failed (status=#{status.exitstatus})"
+      unless result.success?
+        raise ExecutionError, "ruby_pymill failed"
       end
 
-      stdout_all
+      result
     end
   end
 end

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative "ruby_pymill/version"
-require_relative "ruby_pymill/api"
 require "json"
 require "open3"
 require "tmpdir"
@@ -12,14 +11,14 @@ module RubyPyMill
       @kernel    = kernel
       @cwd       = cwd
       @logger    = logger
-      @cell_tags = normalize_tags(cell_tags)  # ← 文字列/配列どちらでもOKに
+      @cell_tags = normalize_tags(cell_tags)
     end
 
     # params_json: path to json file or JSON string
     # cell_tags  : initialize の指定を上書き可能（カンマ/空白区切り文字列 or 配列）
     def run(input_ipynb:, output_ipynb:, params_json: nil, kernel: nil, dry_run: false, cell_tags: nil)
       k    = kernel || @kernel
-      tags = normalize_tags(cell_tags.nil? ? @cell_tags : cell_tags)  # ← 正規化して複数タグ対応
+      tags = normalize_tags(cell_tags.nil? ? @cell_tags : cell_tags)
 
       # 1) タグ指定があればノートを事前フィルタ
       filtered_input = tags.empty? ? input_ipynb : filter_by_tags(input_ipynb, tags)
@@ -38,14 +37,32 @@ module RubyPyMill
         end
       end
 
-      cmd = args.join(" ")
-      @logger.puts "[RubyPyMill] #{dry_run ? 'DRY' : 'RUN'}: #{cmd}"
-      return true if dry_run
+      cmd_str = args.join(" ")
+      @logger.puts "[RubyPyMill] #{dry_run ? 'DRY' : 'RUN'}: #{cmd_str}"
 
-      stdout_str, stderr_str, status = Open3.capture3(cmd, chdir: @cwd || Dir.pwd)
+      if dry_run
+        return Result.new(
+          success: true,
+          output: output_ipynb,
+          filtered_input: filtered_input,
+          command: cmd_str,
+          stdout: "",
+          stderr: ""
+        )
+      end
+
+      stdout_str, stderr_str, status = Open3.capture3(*args, chdir: @cwd || Dir.pwd)
       @logger.puts stdout_str unless stdout_str.empty?
       @logger.puts stderr_str unless stderr_str.empty?
-      status.success?
+
+      Result.new(
+        success: status.success?,
+        output: output_ipynb,
+        filtered_input: filtered_input,
+        command: cmd_str,
+        stdout: stdout_str,
+        stderr: stderr_str
+      )
     end
 
     private
@@ -71,7 +88,9 @@ module RubyPyMill
 
       # 万一ゼロ件なら parameters 系のみ確保
       if kept.empty?
-        kept = cells.select { |c| (Array(c.dig("metadata", "tags")) & %w[parameters injected-parameters]).any? }
+        kept = cells.select do |c|
+          (Array(c.dig("metadata", "tags")) & %w[parameters injected-parameters]).any?
+        end
       end
 
       filtered = data.dup
@@ -84,3 +103,5 @@ module RubyPyMill
     end
   end
 end
+
+require_relative "ruby_pymill/api"

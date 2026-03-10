@@ -1,6 +1,10 @@
 # RubyPyMill
 Running Notebooks the Ruby Way — RubyPyMill and the Art of PoC Automation
 
+RubyPyMill bridges Ruby orchestration with Python's Jupyter notebook execution ecosystem.
+
+**RubyPyMill v0.3.0 introduces the experimental Ruby API.**
+
 ## Background and Purpose
 RubyPyMill is a lightweight runner and automation starter that allows Ruby
 to control Papermill (a Python Notebook runner).
@@ -113,6 +117,7 @@ This example demonstrates:
 For a detailed explanation in Japanese, see `README.jp.md`.
 
 ## Programmatic Usage (Experimental)
+
 RubyPyMill is primarily designed as a CLI tool.
 
 Internally, it exposes a Ruby execution API (`RubyPyMill::API`),
@@ -123,6 +128,22 @@ or future web APIs.
 
 The CLI is considered the stable interface.
 The Ruby API is experimental and may change.
+
+```ruby
+require "ruby_pymill"
+
+result = RubyPyMill::API.run(
+  input: "examples/notebooks/lang_radar.ipynb",
+  output: "examples/outputs/lang_radar_out.ipynb",
+  params: "examples/params/lang_radar.json",
+  kernel: "rpymill",
+  cell_tags: "parameters,setup,graph_output"
+)
+
+puts result.output
+```
+
+---
 
 ## Changelog
 

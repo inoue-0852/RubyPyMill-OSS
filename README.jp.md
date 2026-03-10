@@ -1,5 +1,10 @@
 # RubyPyMill
+
 Running Notebooks the Ruby Way — RubyPyMill and the Art of PoC Automation
+
+RubyPyMill bridges Ruby orchestration with Python's Jupyter notebook execution ecosystem.
+
+**RubyPyMill v0.3.0 introduces the experimental Ruby API.**
 
 ---
 
@@ -58,7 +63,7 @@ Jupyter Notebook（PoC 実行環境）
 | spec/ | RSpec テスト |
 
 ---
-## Installation
+## インストール
 RubyPyMill は RubyGems として配布されています。
 
 ```bash
@@ -132,11 +137,10 @@ parameters,setup,graph_view
 parameters,setup,graph_output
 ```
 
-### JSON パラメータ指定例
-### JSON parameter example (preview only)
+### JSON パラメータ指定例 
 
-This example loads parameters from JSON and executes only the graph preview
-(`graph_view`) without generating output files.
+この例では JSON からパラメータを読み込み、
+グラフのプレビュー（`graph_view`）のみを実行します。
 
 ```bash
 bundle exec ruby bin/ruby_pymill exec examples/notebooks/lang_radar.ipynb \
@@ -169,13 +173,31 @@ Notebook を論理的な単位（cell tags）で分割し、
 ---
 
 ## プログラムからの利用について（実験的）
-RubyPyMill は CLI を安定したインターフェースとして設計されています。
 
-内部には `RubyPyMill::API` が存在し、  
-Ruby コードから直接 Notebook 実行を呼び出すことも可能です。
+RubyPyMill は主に CLI ツールとして設計されています。
 
-ただし、API は将来変更される可能性があるため、  
-現時点では **実験的な位置づけ**としています。
+内部には Ruby から Notebook 実行を呼び出すための  
+`RubyPyMill::API` が用意されており、  
+バッチ処理・スケジューラ・将来的な Web API などから利用することも可能です。
+
+CLI は **安定したインターフェース（stable）** として位置づけています。  
+一方で Ruby API は **実験的（experimental）** であり、将来変更される可能性があります。
+
+### Ruby API 使用例
+
+```ruby
+require "ruby_pymill"
+
+result = RubyPyMill::API.run(
+  input: "examples/notebooks/lang_radar.ipynb",
+  output: "examples/outputs/lang_radar_out.ipynb",
+  params: "examples/params/lang_radar.json",
+  kernel: "rpymill",
+  cell_tags: "parameters,setup,graph_output"
+)
+
+puts result
+```
 
 ## Changelog
 
