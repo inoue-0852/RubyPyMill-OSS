@@ -20,7 +20,7 @@ module RubyPyMill
   end
 
   module API
-    # Ruby から notebook を実行する公開API（experimental）
+    # Ruby から notebook を実行する公開API
     #
     # 例:
     #   result = RubyPyMill::API.run(
@@ -34,8 +34,15 @@ module RubyPyMill
     #
     #   puts result.output
     #
+    # 後方互換: input: の旧名称 notebook: も引き続き使用可能
+    #   result = RubyPyMill::API.run(
+    #     notebook: "examples/notebooks/lang_radar.ipynb",
+    #     ...
+    #   )
+    #
     def self.run(
-      input:,
+      input: nil,
+      notebook: nil,
       output:,
       kernel: "rpymill",
       cell_tags: nil,
@@ -45,6 +52,10 @@ module RubyPyMill
       logger: $stdout,
       cwd: nil
     )
+      # notebook: は input: の旧名称（後方互換）
+      resolved_input = input || notebook
+      raise ArgumentError, "input: (or notebook:) is required" if resolved_input.nil?
+
       runner = Runner.new(
         kernel: kernel,
         cwd: cwd,
@@ -53,7 +64,7 @@ module RubyPyMill
       )
 
       result = runner.run(
-        input_ipynb: input,
+        input_ipynb: resolved_input,
         output_ipynb: output,
         params_json: params,
         kernel: kernel,
